@@ -19,10 +19,11 @@
 **
 **
 **  DESCRIPTION: For demonstration purpose only - use it on u own risk and to study of Block I/O real live.
+**		Not all resources can be correctly deallocated on unload this module.
 **
 **  DESIGN ISSUE:
-**      This moule is containce routines to intercep make_request_fn () to interept and processing WRITE request, and bio_endio() to process READ request.
-**      Also there is a small piece of code to demonstrate a exnetran control function is implemented by IIOCTL do "du$ctl" pseudo-device.
+**      This module implement replacement of make_request_fn () to intercept and processing WRITE requests, and bio_endio() to process READ request.
+**      Also there is a small piece of code to demonstrate a external control function is implemented by IOCTL do "du$ctl" pseudo-device.
 **
 **      Enjoy!
 **
@@ -48,6 +49,9 @@
 **	$ dmesg | grep DUDRIVER
 **
 **  MODIFICATION HISTORY:
+**
+**	 7-SEP-2018	RRL	Added iob->bi_opf |= REQ_NOMERGE into the make_request_fn() to prevent possible unsolicited 
+**				concurrent access to the buffers during decrypting. 
 **
 **--
 */
